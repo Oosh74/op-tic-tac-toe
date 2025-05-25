@@ -1,3 +1,5 @@
+//TODO finish error handling on existing positon
+
 //Store gameboard as an array inside gameboard object
 
 const gameBoard = (() => {
@@ -5,8 +7,12 @@ const gameBoard = (() => {
 
   const getBoard = () => console.log(gameBoardArr);
   const playerMove = (token, position) => {
-    gameBoardArr[position] = token;
-    return console.log(gameBoardArr);
+    if (gameBoardarr[position].length === 0) {
+      console.log('Position is not empty! Select again');
+      playerMove(token, position);
+    } else {
+      gameBoardArr[position] = token;
+    }
   };
 
   return { getBoard, playerMove };
@@ -45,29 +51,34 @@ const playerModule = (() => {
 //gameflow obj
 
 const gameController = (() => {
+  //   gameBoard.getBoard();
+  let player1 = {};
+  let player2 = {};
+  let round = 0;
+
   const startGame = () => {
-    const player1 = playerModule.playerFactory();
-    const player2 = playerModule.playerFactory();
-    gameBoard.getBoard();
+    player1 = playerModule.playerFactory();
+    player2 = playerModule.playerFactory();
     player1.getPlayerName();
     player2.getPlayerName();
+  };
+
+  const makeMove = (position) => {
+    console.log(`Round: ${round}`);
     let playerOneToken = player1.getPlayerToken();
     let playerTwoToken = player2.getPlayerToken();
 
-    gameBoard.playerMove(playerOneToken, 6);
-    gameBoard.playerMove(playerTwoToken, 5);
-  };
-  //game starts on load
-  //board is generated/cleared
-  //assign players
-  //playerOne turn
-  //player makes selection on tic tac toe board
-  //board is updated
-  //playerTwo turn
-  //makes selection
-  //board is updated
+    round % 2 === 1
+      ? gameBoard.playerMove(playerOneToken, position)
+      : gameBoard.playerMove(playerTwoToken, position);
 
-  return { startGame };
+    round++;
+    gameBoard.getBoard();
+  };
+
+  return { startGame, makeMove };
 })();
 
 gameController.startGame();
+gameController.makeMove(3);
+gameController.makeMove(4);
