@@ -79,12 +79,40 @@ const gameController = (() => {
     } else {
       board[position] = token;
     }
+
+    checkWinner(token);
+  };
+
+  const checkWinner = (token) => {
+    let board = gameBoard.getBoard();
+
+    if (board[0] === token && board[1] === token && board[2] === token) {
+      console.log(`${token} is the winner!`);
+    } else if (board[3] === token && board[4] === token && board[5] === token) {
+      console.log(`${token} is the winner!`);
+    } else if (board[6] === token && board[7] === token && board[8] === token) {
+      console.log(`${token} is the winner!`);
+    } else if (board[0] === token && board[4] === token && board[8] === token) {
+      console.log(`${token} is the winner!`);
+    } else if (board[2] === token && board[4] === token && board[6] === token) {
+      console.log(`${token} is the winner!`);
+    } else if (board[0] === token && board[3] === token && board[6] === token) {
+      console.log(`${token} is the winner!`);
+    } else if (board[1] === token && board[4] === token && board[7] === token) {
+      console.log(`${token} is the winner!`);
+    } else if (board[2] === token && board[5] === token && board[8] === token) {
+      console.log(`${token} is the winner!`);
+    } else {
+      console.log('No winner, please continue playing');
+    }
   };
 
   return { startGame, makeMove };
 })();
 
 gameController.startGame();
+gameController.makeMove(0);
 gameController.makeMove(3);
+gameController.makeMove(1);
 gameController.makeMove(4);
-gameController.makeMove(4);
+gameController.makeMove(2);
