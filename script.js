@@ -80,11 +80,11 @@ const gameController = (() => {
       board[position] = token;
     }
 
-    checkWinner(token);
+    checkWinner(token, round);
   };
 
-  const checkWinner = (token) => {
-    let board = gameBoard.getBoard();
+  const checkWinner = (token, round) => {
+    const board = gameBoard.getBoard();
 
     if (board[0] === token && board[1] === token && board[2] === token) {
       console.log(`${token} is the winner!`);
@@ -102,6 +102,8 @@ const gameController = (() => {
       console.log(`${token} is the winner!`);
     } else if (board[2] === token && board[5] === token && board[8] === token) {
       console.log(`${token} is the winner!`);
+    } else if (round === 8) {
+      console.log('Tie! Start new game');
     } else {
       console.log('No winner, please continue playing');
     }
@@ -111,8 +113,12 @@ const gameController = (() => {
 })();
 
 gameController.startGame();
-gameController.makeMove(0);
-gameController.makeMove(3);
-gameController.makeMove(1);
-gameController.makeMove(4);
-gameController.makeMove(2);
+gameController.makeMove(0); //x
+gameController.makeMove(8); //o
+gameController.makeMove(7); //x
+gameController.makeMove(1); //o
+gameController.makeMove(2); //x
+gameController.makeMove(3); //o
+gameController.makeMove(5); //x
+gameController.makeMove(4); //o
+gameController.makeMove(6); //x
