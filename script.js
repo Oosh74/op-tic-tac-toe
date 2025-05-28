@@ -5,17 +5,12 @@
 const gameBoard = (() => {
   let gameBoardArr = ['', '', '', '', '', '', '', '', ''];
 
-  const getBoard = () => console.log(gameBoardArr);
-  const playerMove = (token, position) => {
-    if (gameBoardarr[position].length === 0) {
-      console.log('Position is not empty! Select again');
-      playerMove(token, position);
-    } else {
-      gameBoardArr[position] = token;
-    }
+  const getBoard = () => {
+    console.log(gameBoardArr);
+    return gameBoardArr;
   };
 
-  return { getBoard, playerMove };
+  return { getBoard };
 })();
 
 //players are going to also be objects
@@ -51,7 +46,7 @@ const playerModule = (() => {
 //gameflow obj
 
 const gameController = (() => {
-  //   gameBoard.getBoard();
+  let board = gameBoard.getBoard();
   let player1 = {};
   let player2 = {};
   let round = 0;
@@ -69,11 +64,21 @@ const gameController = (() => {
     let playerTwoToken = player2.getPlayerToken();
 
     round % 2 === 1
-      ? gameBoard.playerMove(playerOneToken, position)
-      : gameBoard.playerMove(playerTwoToken, position);
+      ? playerMove(playerOneToken, position)
+      : playerMove(playerTwoToken, position);
 
     round++;
     gameBoard.getBoard();
+  };
+
+  const playerMove = (token, position) => {
+    if (board[position].length > 0) {
+      console.log(board[position].length > 0);
+      console.log('Position is occupied! Select again');
+      // makeMove();
+    } else {
+      board[position] = token;
+    }
   };
 
   return { startGame, makeMove };
@@ -81,4 +86,5 @@ const gameController = (() => {
 
 gameController.startGame();
 gameController.makeMove(3);
+gameController.makeMove(4);
 gameController.makeMove(4);
