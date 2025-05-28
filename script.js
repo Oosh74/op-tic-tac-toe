@@ -115,6 +115,7 @@ const gameController = (() => {
 const domLogic = () => {
   const board = gameBoard.getBoard();
   const boardContainer = document.querySelector('.game-board');
+  const startGame = document.querySelector('.start-game');
   let boardPosition = 0;
 
   console.log('BOARD CONTAINER', boardContainer);
@@ -133,13 +134,17 @@ const domLogic = () => {
     boardPosition++;
   }
 
-  const boardCell = document.querySelectorAll('.board-grid-cell');
-
-  boardCell.map(
-    addEventListener('click', (e) => {
+  const boardCell = [...document.querySelectorAll('.board-grid-cell')];
+  console.log(boardCell);
+  boardCell.forEach((cell) => {
+    cell.addEventListener('click', (e) => {
       return console.log('click', e.target);
-    })
-  );
+    });
+  });
+
+  startGame.addEventListener('click', (e) => {
+    console.log('click', e.target);
+  });
 };
 
 domLogic();
