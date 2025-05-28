@@ -44,7 +44,6 @@ const playerModule = (() => {
 })();
 
 //gameflow obj
-
 const gameController = (() => {
   let board = gameBoard.getBoard();
   let player1 = {};
@@ -112,13 +111,46 @@ const gameController = (() => {
   return { startGame, makeMove };
 })();
 
-gameController.startGame();
-gameController.makeMove(0); //x
-gameController.makeMove(8); //o
-gameController.makeMove(7); //x
-gameController.makeMove(1); //o
-gameController.makeMove(2); //x
-gameController.makeMove(3); //o
-gameController.makeMove(5); //x
-gameController.makeMove(4); //o
-gameController.makeMove(6); //x
+//DOM Logic
+const domLogic = () => {
+  const board = gameBoard.getBoard();
+  const boardContainer = document.querySelector('.game-board');
+  let boardPosition = 0;
+
+  console.log('BOARD CONTAINER', boardContainer);
+  for (let i = 0; i < board.length; i++) {
+    const boardGridCell = document.createElement('div');
+
+    console.log('BOARD DRAWING...');
+    boardGridCell.classList.add(
+      'board-grid-cell',
+      `board-grid-pos-${boardPosition}`
+    );
+    console.log('CLASS LIST ADDED');
+    boardContainer.appendChild(boardGridCell);
+    console.log('GRID CELL ADDED');
+
+    boardPosition++;
+  }
+
+  const boardCell = document.querySelectorAll('.board-grid-cell');
+
+  boardCell.map(
+    addEventListener('click', (e) => {
+      return console.log('click', e.target);
+    })
+  );
+};
+
+domLogic();
+
+// gameController.startGame();
+// gameController.makeMove(0); //x
+// gameController.makeMove(8); //o
+// gameController.makeMove(7); //x
+// gameController.makeMove(1); //o
+// gameController.makeMove(2); //x
+// gameController.makeMove(3); //o
+// gameController.makeMove(5); //x
+// gameController.makeMove(4); //o
+// gameController.makeMove(6); //x
