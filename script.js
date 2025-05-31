@@ -1,7 +1,4 @@
-//TODO finish error handling on existing positon
-
-//Store gameboard as an array inside gameboard object
-
+//Gameboard IIFE
 const gameBoard = (() => {
   let gameBoardArr = ['', '', '', '', '', '', '', '', ''];
 
@@ -13,8 +10,7 @@ const gameBoard = (() => {
   return { getBoard };
 })();
 
-//players are going to also be objects
-
+//Player IIFE & Factory
 const playerModule = (() => {
   let playerNumber = 0;
 
@@ -43,7 +39,7 @@ const playerModule = (() => {
   return { playerFactory };
 })();
 
-//gameflow obj
+//Gameflow
 const gameController = (() => {
   let board = gameBoard.getBoard();
   let player1 = {};
@@ -57,26 +53,26 @@ const gameController = (() => {
     player2.getPlayerName();
   };
 
-  const makeMove = (position) => {
+  const makeMove = (position, gridDomElement) => {
     console.log(`Round: ${round}`);
     let playerOneToken = player1.getPlayerToken();
     let playerTwoToken = player2.getPlayerToken();
 
     round % 2 === 1
-      ? playerMove(playerOneToken, position)
-      : playerMove(playerTwoToken, position);
+      ? playerMove(playerOneToken, position, gridDomElement)
+      : playerMove(playerTwoToken, position, gridDomElement);
 
     round++;
     gameBoard.getBoard();
   };
 
-  const playerMove = (token, position) => {
+  const playerMove = (token, position, gridDomElement) => {
     if (board[position].length > 0) {
       console.log(board[position].length > 0);
       console.log('Position is occupied! Select again');
-      // makeMove();
     } else {
       board[position] = token;
+      gridDomElement.textContent = token;
     }
 
     checkWinner(token, round);
@@ -84,27 +80,38 @@ const gameController = (() => {
 
   const checkWinner = (token, round) => {
     const board = gameBoard.getBoard();
+    const helperText = domLogic.getHelperText();
 
     if (board[0] === token && board[1] === token && board[2] === token) {
       console.log(`${token} is the winner!`);
+      helperText.textContent = `${token} is the winner!`;
     } else if (board[3] === token && board[4] === token && board[5] === token) {
       console.log(`${token} is the winner!`);
+      helperText.textContent = `${token} is the winner!`;
     } else if (board[6] === token && board[7] === token && board[8] === token) {
       console.log(`${token} is the winner!`);
+      helperText.textContent = `${token} is the winner!`;
     } else if (board[0] === token && board[4] === token && board[8] === token) {
       console.log(`${token} is the winner!`);
+      helperText.textContent = `${token} is the winner!`;
     } else if (board[2] === token && board[4] === token && board[6] === token) {
       console.log(`${token} is the winner!`);
+      helperText.textContent = `${token} is the winner!`;
     } else if (board[0] === token && board[3] === token && board[6] === token) {
       console.log(`${token} is the winner!`);
+      helperText.textContent = `${token} is the winner!`;
     } else if (board[1] === token && board[4] === token && board[7] === token) {
       console.log(`${token} is the winner!`);
+      helperText.textContent = `${token} is the winner!`;
     } else if (board[2] === token && board[5] === token && board[8] === token) {
       console.log(`${token} is the winner!`);
+      helperText.textContent = `${token} is the winner!`;
     } else if (round === 8) {
       console.log('Tie! Start new game');
+      helperText.textContent = 'Tie! Start new game';
     } else {
       console.log('No winner, please continue playing');
+      helperText.textContent = 'No winner, please continue playing';
     }
   };
 
@@ -112,50 +119,54 @@ const gameController = (() => {
 })();
 
 //DOM Logic
-const domLogic = () => {
+const domLogic = (() => {
   const board = gameBoard.getBoard();
   const boardContainer = document.querySelector('.game-board');
   const startGame = document.querySelector('.start-game');
-  let boardPosition = 0;
+  const helperText = document.querySelector('.helper-text');
 
-  console.log('BOARD CONTAINER', boardContainer);
-  for (let i = 0; i < board.length; i++) {
-    const boardGridCell = document.createElement('div');
+  const instatiateDomBoard = () => {
+    let boardPosition = 0;
 
-    console.log('BOARD DRAWING...');
-    boardGridCell.classList.add(
-      'board-grid-cell',
-      `board-grid-pos-${boardPosition}`
-    );
-    console.log('CLASS LIST ADDED');
-    boardContainer.appendChild(boardGridCell);
-    console.log('GRID CELL ADDED');
+    console.log('BOARD CONTAINER', boardContainer);
+    for (let i = 0; i < board.length; i++) {
+      const boardGridCell = document.createElement('div');
 
-    boardPosition++;
-  }
+      console.log('BOARD DRAWING...');
+      boardGridCell.classList.add(
+        'board-grid-cell',
+        `board-grid-pos-${boardPosition}`
+      );
 
-  const boardCell = [...document.querySelectorAll('.board-grid-cell')];
-  console.log(boardCell);
-  boardCell.forEach((cell) => {
-    cell.addEventListener('click', (e) => {
-      return console.log('click', e.target);
+      boardGridCell.dataset.indexNumber = boardPosition;
+
+      console.log('CLASS LIST ADDED');
+      boardContainer.appendChild(boardGridCell);
+      console.log('GRID CELL ADDED');
+
+      boardPosition++;
+    }
+
+    const boardCell = [...document.querySelectorAll('.board-grid-cell')];
+    console.log(boardCell);
+
+    boardCell.forEach((cell) => {
+      cell.addEventListener('click', (e) => {
+        gameController.makeMove(e.target.dataset.indexNumber, e.target);
+      });
     });
+  };
+
+  startGame.addEventListener('click', () => {
+    gameController.startGame();
   });
 
-  startGame.addEventListener('click', (e) => {
-    console.log('click', e.target);
-  });
-};
+  const getHelperText = () => {
+    return helperText;
+  };
 
-domLogic();
+  return { getHelperText, instatiateDomBoard };
+})();
 
-// gameController.startGame();
-// gameController.makeMove(0); //x
-// gameController.makeMove(8); //o
-// gameController.makeMove(7); //x
-// gameController.makeMove(1); //o
-// gameController.makeMove(2); //x
-// gameController.makeMove(3); //o
-// gameController.makeMove(5); //x
-// gameController.makeMove(4); //o
-// gameController.makeMove(6); //x
+domLogic.instatiateDomBoard();
+console.log(domLogic.getHelperText());
