@@ -74,7 +74,6 @@ h5,
 h6 {
   overflow-wrap: break-word;
   text-wrap: balance;
-
   color: #ffecd6;
 }
 
@@ -85,7 +84,7 @@ p {
 
 /* Headings */
 h1 {
-  font-size: max(2rem, 4vw, 3rem); /* 56px */
+  font-size: 2rem;
   line-height: 1.2; /* 76px */
 }
 
@@ -134,7 +133,7 @@ p {
   border-bottom: 6px solid #0d2b45;
   border-radius: 8px;
   color: #ffaa5e;
-  font-size: 4rem;
+  font-size: 3rem;
 }
 
 .game-board {
@@ -163,4 +162,31 @@ body > section {
   display: flex;
   align-items: center;
   justify-content: center;
+}
+
+button {
+  padding: 16px 24px;
+  font-size: 0.75rem;
+  background-color: #ffd4a3;
+  border: 0px;
+  border-bottom: 4px solid #b39472;
+  border-radius: 16px;
+  cursor: pointer;
+  border-top: 1px solid white;
+}
+
+button:active {
+  border-bottom: 0px;
+  margin-top: 4px;
+  background-color: #e6bf93;
+}
+
+header {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-end;
+  width: 100vw;
+  padding-right: 4vw;
+  margin-bottom: 16px;
 }
