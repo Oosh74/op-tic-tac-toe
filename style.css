@@ -139,7 +139,7 @@ p {
 
 .board-grid-cell {
   height: 100%;
-  width: auto;
+  width: 100%;
   background-color: var(--grid-cell-color);
   cursor: pointer;
   display: flex;
@@ -153,8 +153,8 @@ p {
 
 .game-board {
   display: grid;
-  grid-template-columns: repeat(3, 15vh);
-  grid-template-rows: repeat(3, 15vh);
+  grid-template-columns: repeat(3, minmax(25px, 15vh));
+  grid-template-rows: repeat(3, minmax(25px, 15vh));
   gap: 16px;
   align-items: center;
   justify-content: center;
