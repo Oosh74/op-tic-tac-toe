@@ -26,6 +26,8 @@ const domLogic = (() => {
   const boardContainer = document.querySelector('.game-board');
   const startGame = document.querySelector('.start-game');
   const helperText = document.querySelector('.helper-text');
+  const themeToggleBtn = document.querySelector('.theme-toggle');
+  const boardCells = document.querySelectorAll('.board-grid-cell');
 
   const instantiateDomBoard = () => {
     let boardPosition = 0;
@@ -51,10 +53,6 @@ const domLogic = (() => {
     });
   };
 
-  startGame.addEventListener('click', () => {
-    gameController.startGame();
-  });
-
   const getHelperText = () => {
     return helperText;
   };
@@ -63,18 +61,32 @@ const domLogic = (() => {
     return startGame;
   };
 
+  const getBoardCells = () => {
+    return boardCells;
+  };
+
   const setTheme = () => {
     const root = document.documentElement;
-    const newTheme = root.className === 'dark' ? 'light' : 'dark';
+    let newTheme = root.className === 'dark' ? 'light' : 'dark';
 
     root.className = newTheme;
 
-    document.querySelector('.theme-name').textContent = newTheme;
+    newTheme.toUpperCase();
+    console.log(newTheme);
+
+    newTheme === 'dark'
+      ? (themeToggleBtn.textContent = `Light Mode`)
+      : (themeToggleBtn.textContent = `Dark Mode`);
   };
 
-  document.querySelector('.theme-toggle').addEventListener('click', setTheme);
+  //Event Listeners
+  startGame.addEventListener('click', () => {
+    gameController.startGame();
+  });
 
-  return { getHelperText, instantiateDomBoard, getStartBtn };
+  themeToggleBtn.addEventListener('click', setTheme);
+
+  return { getHelperText, instantiateDomBoard, getStartBtn, getBoardCells };
 })();
 
 //Gameflow
@@ -91,7 +103,9 @@ const gameController = (() => {
     for (let i = 0; i < board.length; i++) {
       board[i] = '';
     }
-    const boardCells = document.querySelectorAll('.board-grid-cell');
+    const boardCells = domLogic.getBoardCells();
+
+    console.log(boardCells);
     boardCells.forEach((cell) => (cell.textContent = '')); // clear board visually
 
     player1 = playerModule('X');
