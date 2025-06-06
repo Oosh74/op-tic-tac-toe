@@ -198,10 +198,16 @@ button:active {
 
 header {
   display: flex;
-  flex-direction: row;
   align-items: center;
   justify-content: flex-end;
-  width: 100vw;
   padding-right: 4vw;
   margin-bottom: 16px;
+  width: 100vw;
+}
+
+@media (max-width: 768px) {
+  header {
+    justify-content: center;
+    align-items: center;
+  }
 }
