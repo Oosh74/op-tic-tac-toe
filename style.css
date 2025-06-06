@@ -1,6 +1,22 @@
-/* * {
-  border: 1px solid red;
-} */
+:root.dark {
+  --background-color: #0d2b45;
+  --font-color: #ffecd6;
+  --grid-cell-color: #544e68;
+  --grid-background-color: #203c56;
+  --button-bg: #ffd4a3;
+  --button-bg-active: #e6bf93;
+  --button-border: #b39472;
+}
+
+:root.light {
+  --background-color: #ffecd6;
+  --font-color: #0d2b45;
+  --grid-cell-color: #ffaa5e;
+  --grid-background-color: #ffd4a3;
+  --button-bg: #a48795;
+  --button-bg-active: #987887;
+  --button-border: #8d697a;
+}
 
 /* press-start-2p-regular - latin */
 @font-face {
@@ -41,8 +57,8 @@ body {
   flex-flow: column wrap;
   align-items: center;
   justify-content: center;
-  background-color: #0d2b45;
-  color: #ffecd6;
+  background-color: var(--background-color);
+  color: var(--font-color);
   font-family: 'Press Start 2P', Arial, Helvetica;
 }
 
@@ -74,7 +90,6 @@ h5,
 h6 {
   overflow-wrap: break-word;
   text-wrap: balance;
-  color: #ffecd6;
 }
 
 /* 9. Improve line wrapping */
@@ -125,14 +140,14 @@ p {
 .board-grid-cell {
   height: 100%;
   width: auto;
-  background-color: #544e68;
+  background-color: var(--grid-cell-color);
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
-  border-bottom: 6px solid #0d2b45;
+  border-bottom: 6px solid var(--background-color);
   border-radius: 8px;
-  color: #ffaa5e;
+  color: var(--font-color);
   font-size: 3rem;
 }
 
@@ -143,8 +158,8 @@ p {
   gap: 16px;
   align-items: center;
   justify-content: center;
-  background-color: #203c56;
-  border: 24px solid #203c56;
+  background-color: var(--grid-background-color);
+  border: 24px solid var(--grid-background-color);
   border-radius: 16px;
 }
 
@@ -167,9 +182,9 @@ body > section {
 button {
   padding: 16px 24px;
   font-size: 0.75rem;
-  background-color: #ffd4a3;
+  background-color: var(--button-bg);
   border: 0px;
-  border-bottom: 4px solid #b39472;
+  border-bottom: 4px solid var(--button-border);
   border-radius: 16px;
   cursor: pointer;
   border-top: 1px solid white;
@@ -178,7 +193,7 @@ button {
 button:active {
   border-bottom: 0px;
   margin-top: 4px;
-  background-color: #e6bf93;
+  background-color: var(--button-bg-active);
 }
 
 header {
