@@ -27,7 +27,6 @@ const domLogic = (() => {
   const startGame = document.querySelector('.start-game');
   const helperText = document.querySelector('.helper-text');
   const themeToggleBtn = document.querySelector('.theme-toggle');
-  const boardCells = document.querySelectorAll('.board-grid-cell');
 
   const instantiateDomBoard = () => {
     let boardPosition = 0;
@@ -62,6 +61,7 @@ const domLogic = (() => {
   };
 
   const getBoardCells = () => {
+    const boardCells = document.querySelectorAll('.board-grid-cell');
     return boardCells;
   };
 
@@ -103,9 +103,7 @@ const gameController = (() => {
     for (let i = 0; i < board.length; i++) {
       board[i] = '';
     }
-    const boardCells = domLogic.getBoardCells();
-
-    console.log(boardCells);
+    let boardCells = domLogic.getBoardCells();
     boardCells.forEach((cell) => (cell.textContent = '')); // clear board visually
 
     player1 = playerModule('X');
