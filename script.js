@@ -10,14 +10,16 @@ const gameBoard = (() => {
 })();
 
 //Player IIFE & Factory
-const playerModule = (token) => {
+const playerModule = (token, name) => {
   let playerToken = token;
+  let playerName = name;
+  let score = 0;
 
-  const getPlayerToken = () => {
-    return playerToken;
-  };
+  const getPlayerToken = () => playerToken;
+  const getPlayerName = () => playerName;
+  const incrementScore = () => score++;
 
-  return { getPlayerToken };
+  return { getPlayerToken, getPlayerName, incrementScore };
 };
 
 //DOM Logic
@@ -27,6 +29,10 @@ const domLogic = (() => {
   const startGame = document.querySelector('.start-game');
   const helperText = document.querySelector('.helper-text');
   const themeToggleBtn = document.querySelector('.theme-toggle');
+  const playerOneName = document.querySelector('.player-one');
+  const playerTwoName = document.querySelector('.player-two');
+  const playerOneScore = document.querySelector('player-one-score');
+  const playerTwoScore = document.querySelector('.player-two-score');
 
   const instantiateDomBoard = () => {
     let boardPosition = 0;
