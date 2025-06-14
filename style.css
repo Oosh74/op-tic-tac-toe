@@ -228,3 +228,16 @@ header {
     flex: 1 1 45%;
   }
 }
+
+.winner-outline {
+  background-color: green;
+}
+
+.player-card {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  background-color: var(--grid-cell-color);
+  border-radius: 8px;
+  padding: 16px;
+}

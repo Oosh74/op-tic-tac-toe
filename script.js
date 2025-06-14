@@ -1,4 +1,4 @@
-//Gameboard IIFE
+// Gameboard IIFE
 const gameBoard = (() => {
   let gameBoardArr = ['', '', '', '', '', '', '', '', ''];
 
@@ -9,7 +9,7 @@ const gameBoard = (() => {
   return { getBoard };
 })();
 
-//Player IIFE & Factory
+// Player Module
 const playerModule = (token, name) => {
   let playerToken = token;
   let playerName = name;
@@ -18,20 +18,19 @@ const playerModule = (token, name) => {
   const getPlayerToken = () => playerToken;
   const getPlayerName = () => playerName;
   const incrementScore = () => score++;
+  const getScore = () => score;
 
-  return { getPlayerToken, getPlayerName, incrementScore };
+  return { getPlayerToken, getPlayerName, incrementScore, getScore };
 };
 
-//DOM Logic
+// DOM Logic
 const domLogic = (() => {
   const board = gameBoard.getBoard();
   const boardContainer = document.querySelector('.game-board');
   const startGame = document.querySelector('.start-game');
   const helperText = document.querySelector('.helper-text');
   const themeToggleBtn = document.querySelector('.theme-toggle');
-  const playerOneName = document.querySelector('.player-one');
-  const playerTwoName = document.querySelector('.player-two');
-  const playerOneScore = document.querySelector('player-one-score');
+  const playerOneScore = document.querySelector('.player-one-score');
   const playerTwoScore = document.querySelector('.player-two-score');
 
   const instantiateDomBoard = () => {
@@ -58,13 +57,13 @@ const domLogic = (() => {
     });
   };
 
-  const getHelperText = () => {
-    return helperText;
+  const resetBoardUI = () => {
+    boardContainer.innerHTML = ''; // clear previous cells
+    instantiateDomBoard(); // rebuild grid and add listeners
   };
 
-  const getStartBtn = () => {
-    return startGame;
-  };
+  const getHelperText = () => helperText;
+  const getStartBtn = () => startGame;
 
   const getBoardCells = () => {
     const boardCells = document.querySelectorAll('.board-grid-cell');
@@ -74,32 +73,48 @@ const domLogic = (() => {
   const setTheme = () => {
     const root = document.documentElement;
     let newTheme = root.className === 'dark' ? 'light' : 'dark';
-
     root.className = newTheme;
-
-    newTheme.toUpperCase();
-    console.log(newTheme);
 
     newTheme === 'dark'
       ? (themeToggleBtn.textContent = `Light Mode`)
       : (themeToggleBtn.textContent = `Dark Mode`);
   };
 
-  //Event Listeners
+  const updateScoreDisplay = (scoreOne, scoreTwo) => {
+    playerOneScore.textContent = `${scoreOne}`;
+    playerTwoScore.textContent = `${scoreTwo}`;
+  };
+
+  const highlightWinner = (a, b, c) => {
+    const boardCells = domLogic.getBoardCells();
+    [a, b, c].forEach((i) => {
+      boardCells[i].classList.add('winner-outline');
+    });
+  };
+
+  // Event Listeners
   startGame.addEventListener('click', () => {
     gameController.startGame();
   });
 
   themeToggleBtn.addEventListener('click', setTheme);
 
-  return { getHelperText, instantiateDomBoard, getStartBtn, getBoardCells };
+  return {
+    getHelperText,
+    instantiateDomBoard,
+    getStartBtn,
+    getBoardCells,
+    updateScoreDisplay,
+    resetBoardUI,
+    highlightWinner,
+  };
 })();
 
-//Gameflow
+// Game Controller
 const gameController = (() => {
   const board = gameBoard.getBoard();
-  let player1;
-  let player2;
+  const player1 = playerModule('X');
+  const player2 = playerModule('O');
   let round = 0;
   const helperText = domLogic.getHelperText();
   const startBtn = domLogic.getStartBtn();
@@ -109,11 +124,8 @@ const gameController = (() => {
     for (let i = 0; i < board.length; i++) {
       board[i] = '';
     }
-    let boardCells = domLogic.getBoardCells();
-    boardCells.forEach((cell) => (cell.textContent = '')); // clear board visually
 
-    player1 = playerModule('X');
-    player2 = playerModule('O');
+    domLogic.resetBoardUI();
 
     gameStarted = true;
     round = 0;
@@ -124,7 +136,7 @@ const gameController = (() => {
 
   const makeMove = (position, gridDomElement) => {
     if (!gameStarted) return;
-    if (board[position].length > 0) return; // prevent double moves
+    if (board[position].length > 0) return;
 
     const playerOneToken = player1.getPlayerToken();
     const playerTwoToken = player2.getPlayerToken();
@@ -136,6 +148,7 @@ const gameController = (() => {
     if (checkWinner(token, round)) {
       gameStarted = false;
       startBtn.textContent = 'Restart Game';
+      domLogic.updateScoreDisplay(player1.getScore(), player2.getScore());
       return;
     }
 
@@ -160,16 +173,24 @@ const gameController = (() => {
     for (const [a, b, c] of winningConditions) {
       if (board[a] === token && board[b] === token && board[c] === token) {
         helperText.textContent = `${token} is the winner!`;
-        return true; // Winner found
+        domLogic.highlightWinner(a, b, c);
+
+        if (token === player1.getPlayerToken()) {
+          player1.incrementScore();
+        } else {
+          player2.incrementScore();
+        }
+
+        return true;
       }
     }
 
     if (round === 8) {
       helperText.textContent = 'Tie! Start new game';
-      return true; // Game ended in tie
+      return true;
     }
 
-    return false; // Game is still going
+    return false;
   };
 
   return { startGame, makeMove, checkWinner };
