@@ -240,4 +240,5 @@ header {
   background-color: var(--grid-cell-color);
   border-radius: 8px;
   padding: 16px;
+  box-shadow: 0px 0px 0px 16px var(--grid-background-color);
 }
