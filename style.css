@@ -181,6 +181,12 @@ body > section {
   gap: 16px;
 }
 
+.button-group {
+  display: flex;
+  flex-direction: row;
+  gap: 16px;
+}
+
 button {
   padding: 16px 24px;
   font-size: 0.75rem;

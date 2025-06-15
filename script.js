@@ -10,17 +10,22 @@ const gameBoard = (() => {
 })();
 
 // Player Module
-const playerModule = (token, name) => {
+const playerModule = (token) => {
   let playerToken = token;
-  let playerName = name;
+  let playerName = token;
   let score = 0;
 
   const getPlayerToken = () => playerToken;
-  const getPlayerName = () => playerName;
   const incrementScore = () => score++;
   const getScore = () => score;
+  const getPlayerName = () => playerName;
 
-  return { getPlayerToken, getPlayerName, incrementScore, getScore };
+  return {
+    getPlayerToken,
+    getPlayerName,
+    incrementScore,
+    getScore,
+  };
 };
 
 // DOM Logic
@@ -32,6 +37,8 @@ const domLogic = (() => {
   const themeToggleBtn = document.querySelector('.theme-toggle');
   const playerOneScore = document.querySelector('.player-one-score');
   const playerTwoScore = document.querySelector('.player-two-score');
+  // const playerOneName = document.querySelector(`.`);
+  // const playerTwoName = document.querySelector(`.`);
 
   const instantiateDomBoard = () => {
     let boardPosition = 0;
