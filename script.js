@@ -37,6 +37,9 @@ const domLogic = (() => {
   const themeToggleBtn = document.querySelector('.theme-toggle');
   const playerOneScore = document.querySelector('.player-one-score');
   const playerTwoScore = document.querySelector('.player-two-score');
+  const editPlayerNames = document.querySelector('.edit-player-names');
+  const formModal = document.querySelector('.form-modal');
+  const closeForm = document.querySelector('.close-form');
   // const playerOneName = document.querySelector(`.`);
   // const playerTwoName = document.querySelector(`.`);
 
@@ -102,6 +105,20 @@ const domLogic = (() => {
   // Event Listeners
   startGame.addEventListener('click', () => {
     gameController.startGame();
+  });
+
+  editPlayerNames.addEventListener('click', () => {
+    formModal.showModal();
+  });
+
+  closeForm.addEventListener('click', () => {
+    formModal.close();
+  });
+
+  formModal.addEventListener('click', (event) => {
+    if (event.target === formModal) {
+      formModal.close();
+    }
   });
 
   themeToggleBtn.addEventListener('click', setTheme);
