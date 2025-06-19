@@ -219,7 +219,7 @@ header {
   gap: 5vw;
 }
 
-@media (max-width: 800px) {
+@media (max-width: 1031px) {
   header {
     justify-content: center;
     align-items: center;

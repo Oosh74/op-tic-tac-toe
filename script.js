@@ -19,12 +19,16 @@ const playerModule = (token) => {
   const incrementScore = () => score++;
   const getScore = () => score;
   const getPlayerName = () => playerName;
+  const setPlayerName = (newPlayerName) => {
+    playerName = newPlayerName;
+  };
 
   return {
     getPlayerToken,
     getPlayerName,
     incrementScore,
     getScore,
+    setPlayerName,
   };
 };
 
@@ -40,8 +44,9 @@ const domLogic = (() => {
   const editPlayerNames = document.querySelector('.edit-player-names');
   const formModal = document.querySelector('.form-modal');
   const closeForm = document.querySelector('.close-form');
-  // const playerOneName = document.querySelector(`.`);
-  // const playerTwoName = document.querySelector(`.`);
+  const formSubmission = document.querySelector('form');
+  const playerOneName = document.querySelector(`.player-one-name`);
+  const playerTwoName = document.querySelector(`.player-two-name`);
 
   const instantiateDomBoard = () => {
     let boardPosition = 0;
@@ -121,6 +126,18 @@ const domLogic = (() => {
     }
   });
 
+  formSubmission.addEventListener('submit', (event) => {
+    event.preventDefault();
+    playerOneName.textContent = `${event.target.playOneName.value}'s Score`;
+    playerTwoName.textContent = `${event.target.playerTwoName.value}'s Score`;
+    gameController.updatePlayerNames(
+      event.target.playOneName.value,
+      event.target.playerTwoName.value
+    );
+    formSubmission.reset();
+    formModal.close();
+  });
+
   themeToggleBtn.addEventListener('click', setTheme);
 
   return {
@@ -139,6 +156,8 @@ const gameController = (() => {
   const board = gameBoard.getBoard();
   const player1 = playerModule('X');
   const player2 = playerModule('O');
+  player1.setPlayerName('X');
+  player2.setPlayerName('O');
   let round = 0;
   const helperText = domLogic.getHelperText();
   const startBtn = domLogic.getStartBtn();
@@ -154,7 +173,7 @@ const gameController = (() => {
     gameStarted = true;
     round = 0;
 
-    helperText.textContent = `X's Turn`;
+    helperText.textContent = `${player1.getPlayerName()}'s Turn`;
     startBtn.textContent = 'Restart Game';
   };
 
@@ -164,6 +183,9 @@ const gameController = (() => {
 
     const playerOneToken = player1.getPlayerToken();
     const playerTwoToken = player2.getPlayerToken();
+    const playerOneName = player1.getPlayerName();
+    const playerTwoName = player2.getPlayerName();
+
     const token = round % 2 === 0 ? playerOneToken : playerTwoToken;
 
     board[position] = token;
@@ -177,7 +199,8 @@ const gameController = (() => {
     }
 
     round++;
-    helperText.textContent = token === 'X' ? "O's Turn" : "X's Turn";
+    helperText.textContent =
+      token === 'X' ? `${playerTwoName}'s Turn` : `${playerOneName}'s Turn`;
   };
 
   const checkWinner = (token, round) => {
@@ -196,7 +219,12 @@ const gameController = (() => {
 
     for (const [a, b, c] of winningConditions) {
       if (board[a] === token && board[b] === token && board[c] === token) {
-        helperText.textContent = `${token} is the winner!`;
+        if (token === 'X') {
+          helperText.textContent = `${player1.getPlayerName()} is the winner!`;
+        } else {
+          helperText.textContent = `${player2.getPlayerName()} is the winner!`;
+        }
+
         domLogic.highlightWinner(a, b, c);
 
         if (token === player1.getPlayerToken()) {
@@ -217,7 +245,15 @@ const gameController = (() => {
     return false;
   };
 
-  return { startGame, makeMove, checkWinner };
+  const updatePlayerNames = (playerOneName, playerTwoName) => {
+    player1.setPlayerName(playerOneName);
+    player2.setPlayerName(playerTwoName);
+
+    player1.getPlayerName();
+    player2.getPlayerName();
+  };
+
+  return { startGame, makeMove, checkWinner, updatePlayerNames };
 })();
 
 domLogic.instantiateDomBoard();
